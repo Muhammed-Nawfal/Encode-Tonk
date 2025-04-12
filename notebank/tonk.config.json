@@ -1,0 +1,7 @@
+{
+  "name": "notebank",
+  "plan": {
+    "description": "Notebank is a collaborative notetaking platform where students share lecture notes, tag important concepts, and create interlinked references to streamline study sessions."
+  },
+  "template": "react"
+}
