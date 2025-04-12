@@ -1,0 +1,7 @@
+{
+  "name": "crambot",
+  "plan": {
+    "description": "Crambot - ai powered study assistant. crambot uses ai to scan shared notes and generate concise summaries, question-answer flashcards, and a quick revision materian. ITS designed to help students prepare faster by converting raw notes into digestible chunks. KEY FEATURES- 1. summarizes long lectures notes into bullet points, generate ai driven flashcards. "
+  },
+  "template": "react"
+}
