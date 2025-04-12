@@ -1,0 +1,7 @@
+{
+  "name": "semsync",
+  "plan": {
+    "description": "A scheduling tool that keeps track of class times, exam dates and assignment due dates so that students never miss an important deadline"
+  },
+  "template": "react"
+}
