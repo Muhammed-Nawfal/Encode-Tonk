@@ -3,7 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import BrowseView from "./views/BrowseView";
 import EditorView from "./views/EditorView";
-import NoteView from "./views/NoteView"; // New import for the note viewing component
+import NoteView from "./views/NoteView";
+import { useNotesStore } from "./stores/notes";
 
 // Lazy load views for better performance
 // const HomeView = React.lazy(() => import("./views/HomeView"));
@@ -11,48 +12,31 @@ import NoteView from "./views/NoteView"; // New import for the note viewing comp
 // const BrowseView = React.lazy(() => import("./views/BrowseView"));
 
 const App: React.FC = () => {
-  // Example data - in a real app, this would come from a store
-  const dummyNotes = [
-    {
-      id: "1",
-      title: "Introduction to React",
-      content: "React is a JavaScript library for building user interfaces.",
-      updatedAt: new Date(),
-      tags: ["react", "javascript"]
-    },
-    {
-      id: "2",
-      title: "TypeScript Basics",
-      content: "TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.",
-      updatedAt: new Date(),
-      tags: ["typescript", "programming"]
-    }
-  ];
-
-  const availableTags = ["react", "javascript", "typescript", "programming"];
+  // Get notes and tags from the store
+  const { data: { notes, tags } } = useNotesStore();
 
   return (
       <Layout>
         <Routes>
           <Route
               path="/"
-              element={<BrowseView notes={dummyNotes} tags={availableTags} />}
+              element={<BrowseView notes={notes} tags={tags} />}
           />
           <Route
               path="/notes"
-              element={<BrowseView notes={dummyNotes} tags={availableTags} />}
+              element={<BrowseView notes={notes} tags={tags} />}
           />
           <Route
               path="/notes/:id"
-              element={<NoteView notes={dummyNotes} />} // New view-only route
+              element={<NoteView notes={notes} />}
           />
           <Route
               path="/notes/:id/edit"
-              element={<EditorView onSave={note => console.log('Saving note:', note)} />}
+              element={<EditorView />}
           />
           <Route
               path="/new"
-              element={<EditorView onSave={note => console.log('Creating note:', note)} />}
+              element={<EditorView />}
           />
         </Routes>
       </Layout>
