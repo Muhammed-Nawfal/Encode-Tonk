@@ -77,6 +77,7 @@ npm run dev
 
 # Then open http://localhost:3000 and start vibing
 </details>
+
 🧠 Behind the Madness
 Name	What They Broke Built
 Nithin	UI/UX vibes, SemSync overlord
