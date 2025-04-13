@@ -67,7 +67,7 @@ bash
 Copy
 Edit
 # Clone the madness
-git clone https://github.com/your-team/lumio.git && cd lumio
+git clone <this-repo> && cd <thisrepo>
 
 # Install the chaos
 npm install
