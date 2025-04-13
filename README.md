@@ -51,14 +51,14 @@ Keeping track of deadlines like your mom with a clipboard.
 
 ## 🕵‍♀ How the Magic Happens
 
-'''
+```
 You → Write notes & deadlines
      ↓
 Tonk → Glues it all together
      ↓
 CramBot → Summarizes it into flashcards and pings you before your grades drop
 
-'''
+```
 ---
 
 ## 🧪 Run It Yourself (We Dare You)
