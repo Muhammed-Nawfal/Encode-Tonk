@@ -62,6 +62,8 @@ interface NotesActions {
  */
 type NotesStore = NotesState & NotesActions;
 
+// @ts-ignore
+// @ts-ignore
 /**
  * Creates a Zustand store for managing notes with sync capabilities
  */
@@ -176,6 +178,7 @@ export const useNotesStore = create<NotesStore>(
           useNotesStore.getState().setError(error.message);
           console.error('Notes sync initialization error:', error);
         },
+          server: 'ws://localhost:6080/sync', // 👈 Add this line
       }
   )
 );

@@ -6,7 +6,10 @@ import { useNotesStore } from '../../stores/notes';
 const EditorView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getNoteById, addNote, updateNote } = useNotesStore();
+  const getNoteById = useNotesStore((state) => state.getNoteById);
+  const addNote = useNotesStore((state) => state.addNote);
+  const updateNote = useNotesStore((state) => state.updateNote);
+
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');

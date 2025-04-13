@@ -55,7 +55,6 @@ _"Flashcards generated. Guilt trip initialized."_
 
 ## 🕵️‍♀️ How the Magic Happens
 
-```text
 You → Write notes & deadlines
      ↓
 Tonk → Glues it all together
