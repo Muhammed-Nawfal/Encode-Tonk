@@ -33,8 +33,6 @@ All talking through the *Tonk stack*, which is basically a magical, decentralize
 
 ## 🎥 Demo Vibes
 
-> Warning: These GIFs may cause inspiration and/or FOMO.
-
 ### 📝 NoteBank  
 ![NoteBank Demo](./screenshots/notebank.gif)  
 
