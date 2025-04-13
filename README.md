@@ -1,6 +1,6 @@
 # 🌙 Lumio – The Student Life Hack You Didn’t Know You Needed
 
-> *Built in 48 hours of sleep-deprived wizardry at Encode Hackathon London 2025*
+> *Built in 48 hours of sleep-deprived wizardry at Encode Hackathon - London 2025*
 
 ---
 
@@ -25,7 +25,7 @@ All talking through the **Tonk stack**, which is basically a magical, decentrali
 
 - 🧠 **Tonk Toolchain** – the secret sauce (shared datastore, decentralized wizardry)
 - ⚛️ **React + Vite** – because we like fast builds and snappy UIs
-- 🪄 **OpenAI API** – CramBot’s brain (don’t worry, it’s friendly… for now)
+- 🪄 **Ollama** – CramBot’s brain (don’t worry, it’s friendly… for now)
 - ⏰ **date-fns** – we needed something to understand time because we don’t
 - 🍕 **Pizza** – not a tech but extremely important
 
@@ -79,10 +79,10 @@ npm run dev
 </details>
 🧠 Behind the Madness
 Name	What They Broke Built
-Alice	UI/UX vibes, SemSync overlord
-Bob	NoteBank sorcery & data whisperer
-Charlie	Prompt engineer and CramBot whisperer
-Dana	Chaos coordinator & README goblin 🧌
+Nithin	UI/UX vibes, SemSync overlord
+Nawfal	NoteBank sorcery & data whisperer
+Nethra	Prompt engineer and CramBot whisperer
+Raisa	Chaos coordinator, README goblin 🧌 & slayer of mysterious sync demons 🛠️
 💡 Next Level Ideas (Post-Hackathon Hype)
 Group flashcard battles (study or suffer)
 
@@ -109,6 +109,9 @@ Mobile version so you can procrastinate anywhere
 Built with love, caffeine, and mild panic.
 #TeamLumio #EncodeHackathon #WeSurvived
 
+yaml
+Copy
+Edit
 
 ---
 
