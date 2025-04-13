@@ -37,14 +37,23 @@ All talking through the *Tonk stack*, which is basically a magical, decentralize
 
 ### 📝 NoteBank  
 ![NoteBank Demo](./screenshots/notebank.gif)  
+
+![image](https://github.com/user-attachments/assets/020ff91a-c83c-4d4b-9a41-36bdd360af46)
+
 “Wait, I actually remember what I wrote?” – You, next exam season.
 
 ### 📅 SemSync  
 ![SemSync Demo](./screenshots/semsync.gif)  
+
+![image](https://github.com/user-attachments/assets/1d4034e2-a861-49ef-b6ca-b43e16eb00b9)
+
 Keeping track of deadlines like your mom with a clipboard.
 
 ### 🤖 CramBot  
 ![CramBot Demo](./screenshots/crambot.gif)  
+
+![image](https://github.com/user-attachments/assets/b581a2d7-9acb-4902-be57-39fe3d51325c)
+
 "Flashcards generated. Guilt trip initialized."
 
 ---
