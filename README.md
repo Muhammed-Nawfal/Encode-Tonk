@@ -66,17 +66,21 @@ CramBot → Summarizes it into flashcards and pings you before your grades drop
 <details>
 <summary>👨‍💻 Click here for installation instructions if you're brave</summary>
 
-bash
+
 Clone the madness
+```
 git clone https://github.com/your-team/lumio.git && cd lumio
+```
 
 Install the chaos
+```
 npm install
-
+```
 Let there be light
+```
 npm run dev
-
-Then open http://localhost:3000 and start vibing
+```
+Then open ``` http://localhost:3000 ``` and start vibing
 
 
 </details>
