@@ -1,4 +1,4 @@
-🌟 Lumio – The Student Life Hack You Didn’t Know You Needed
+# 🌟 Lumio – The Student Life Hack You Didn’t Know You Needed
 Built in 48 hours of sleep-deprived wizardry at Encode Hackathon – London 2025
 
 🧠 What Is Lumio?
