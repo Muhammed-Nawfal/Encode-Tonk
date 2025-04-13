@@ -25,7 +25,7 @@ All talking through the *Tonk stack*, which is basically a magical, decentralize
 
 - 🧠 *Tonk Toolchain* – the secret sauce (shared datastore, decentralized wizardry)
 - ⚛ *React + Vite* – because we like fast builds and snappy UIs
-- 🪄 *OpenAI API* – CramBot’s brain (don’t worry, it’s friendly… for now)
+- 🪄 *Ollaama* – CramBot’s brain (don’t worry, it’s friendly… for now)
 - ⏰ *date-fns* – we needed something to understand time because we don’t
 - 🍕 *Pizza* – not a tech but extremely important
 
@@ -51,14 +51,14 @@ Keeping track of deadlines like your mom with a clipboard.
 
 ## 🕵‍♀ How the Magic Happens
 
-
+'''
 You → Write notes & deadlines
      ↓
 Tonk → Glues it all together
      ↓
 CramBot → Summarizes it into flashcards and pings you before your grades drop
 
-
+'''
 ---
 
 ## 🧪 Run It Yourself (We Dare You)
@@ -67,16 +67,16 @@ CramBot → Summarizes it into flashcards and pings you before your grades drop
 <summary>👨‍💻 Click here for installation instructions if you're brave</summary>
 
 bash
-# Clone the madness
+Clone the madness
 git clone https://github.com/your-team/lumio.git && cd lumio
 
-# Install the chaos
+Install the chaos
 npm install
 
-# Let there be light
+Let there be light
 npm run dev
 
-# Then open http://localhost:3000 and start vibing
+Then open http://localhost:3000 and start vibing
 
 
 </details>
@@ -87,10 +87,10 @@ npm run dev
 
 | Name     | What They Broke Built |
 |----------|------------------------|
-| Alice    | UI/UX vibes, SemSync overlord |
-| Bob      | NoteBank sorcery & data whisperer |
-| Charlie  | Prompt engineer and CramBot whisperer |
-| Dana     | Chaos coordinator & README goblin 🧌 |
+| Nithin   | UI/UX vibes, SemSync overlord |
+| Nawfal   | NoteBank sorcery & data whisperer |
+| Nethra   | Prompt engineer and CramBot whisperer |
+| Raisa    | Chaos coordinator, README goblin 🧌 & slayer of mysterious sync demons 🛠 💡|
 
 ---
 
