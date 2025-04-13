@@ -69,14 +69,14 @@ CramBot → Summarizes it into flashcards and pings you before your grades drop
 
 Clone the madness
 ```
-git clone https://github.com/your-team/lumio.git && cd lumio
+git clone git@github.com:raisa05/Encode-Tonk.git && cd Encode-Tonk
 ```
 
 Install the chaos
 ```
 npm install
 ```
-Let there be light
+Let there be light (For each app separately)
 ```
 npm run dev
 ```
@@ -119,7 +119,7 @@ Then open ``` http://localhost:3000 ``` and start vibing
 ## 📚 Useful Stuff
 
 - [🧙‍♂ Tonk Docs (they're actually good)](https://tonk-labs.github.io/tonk/)
-- [📦 Our Code (chaos included)](https://github.com/your-team/lumio)
+- [📦 Our Code (chaos included)](https://github.com/raisa05/Encode-Tonk)
 
 ---
 
