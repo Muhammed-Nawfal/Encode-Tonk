@@ -14,16 +14,35 @@ const App: React.FC = () => {
   const [outputType, setOutputType] = useState<AIOutputType>('summary');
   const [currentAICard, setCurrentAICard] = useState<AICardType | null>(null);
 
-  const { notes, aiCards, addAICard, deleteNote, deleteAICard } = useNoteStore();
+  const { 
+    data: { notes, tags }, 
+    aiCards, 
+    addAICard, 
+    deleteNote, 
+    deleteAICard,
+    setProcessing: setStoreProcessing
+  } = useNoteStore();
+
+  // Initialize Ollama service when the app starts
+  useEffect(() => {
+    const initOllama = async () => {
+      try {
+        await aiService.initialize();
+        console.log('Ollama service initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize Ollama service:', error);
+        // Set an error state that can be displayed to the user
+        useNoteStore.getState().setError('Failed to connect to Ollama. Please ensure it is running.');
+      }
+    };
+
+    initOllama();
+  }, []);
 
   // Get all unique tags from notes
   const allTags = React.useMemo(() => {
-    const tagsSet = new Set<string>();
-    notes.forEach(note => {
-      note.tags.forEach(tag => tagsSet.add(tag));
-    });
-    return Array.from(tagsSet);
-  }, [notes]);
+    return tags;
+  }, [tags]);
 
   // Filter notes based on selected tag
   const filteredNotes = React.useMemo(() => {
@@ -33,14 +52,21 @@ const App: React.FC = () => {
 
   const handleProcessNote = useCallback(async (noteId: string, type: AIOutputType) => {
     const note = notes.find((n: Note) => n.id === noteId);
-    if (!note) return;
+    if (!note) {
+      console.error('Note not found:', noteId);
+      return;
+    }
 
+    console.log('Found note for processing:', note.title);
     setIsProcessing(true);
+    setStoreProcessing(true);
     setCurrentAICard(null);
     
     try {
       // Generate content based on selected type
+      console.log('Calling aiService.processNote...');
       const result = await aiService.processNote(note, { type });
+      console.log('Received result from aiService:', result);
       
       // Create our AICard manually so we can use it immediately
       const newCard: AICardType = {
@@ -48,18 +74,22 @@ const App: React.FC = () => {
         id: crypto.randomUUID(),
       };
       
+      console.log('Adding new AI card to store:', newCard.id);
       // Add to store
       addAICard(result);
       
       // Set as current card
+      console.log('Setting current AI card');
       setCurrentAICard(newCard);
     } catch (error) {
       console.error(`Error processing note for ${type}:`, error);
-      // TODO: Add proper error handling
+      // Display error to user
+      alert(`Failed to process note: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsProcessing(false);
+      setStoreProcessing(false);
     }
-  }, [notes, addAICard]);
+  }, [notes, addAICard, setStoreProcessing]);
 
   const handleDeleteNote = useCallback((noteId: string) => {
     if (window.confirm('Are you sure you want to delete this note?')) {
@@ -81,10 +111,18 @@ const App: React.FC = () => {
   }, [deleteAICard, currentAICard]);
 
   // When user selects a note, also clear current AI card
-  const handleSelectNote = (noteId: string) => {
+  const handleSelectNote = useCallback((noteId: string) => {
+    console.log('Selecting note:', noteId);
     setSelectedNote(noteId);
     setCurrentAICard(null);
-  };
+  }, []);
+
+  // Handle successful note creation or update
+  const handleNoteSaved = useCallback((noteId: string) => {
+    setIsEditing(false);
+    // Select the newly created note
+    handleSelectNote(noteId);
+  }, [handleSelectNote]);
 
   return (
     <div className="min-h-screen bg-[#ffeedd] flex flex-col text-base">
@@ -114,7 +152,7 @@ const App: React.FC = () => {
         {isEditing ? (
           <div className="relative bg-white shadow-lg rounded-2xl p-8 max-w-7xl mx-auto mt-8 w-full m-6 border border-[#efa3a0]/20 text-[#493129] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-[#efa3a0]/5 before:to-transparent before:content-['']">
             <NoteEditor
-              onSave={() => setIsEditing(false)}
+              onSave={handleNoteSaved}
               onCancel={() => setIsEditing(false)}
             />
           </div>
@@ -131,12 +169,17 @@ const App: React.FC = () => {
                   <select 
                     className="w-full rounded-xl border-[#efa3a0]/20 shadow-sm focus:border-[#8b597b] focus:ring-[#8b597b] py-3 text-lg bg-[#ffeedd]/50 text-[#493129] transition-all duration-200"
                     value={selectedTag || ''}
-                    onChange={(e) => setSelectedTag(e.target.value || null)}
+                    onChange={(e) => {
+                      const tagValue = e.target.value;
+                      console.log('Tag selection changed to:', tagValue);
+                      setSelectedTag(tagValue || null);
+                    }}
+                    style={{ position: 'relative', zIndex: 30 }}
                   >
                     <option value="">All Tags</option>
-                    {allTags.map(tag => (
+                    {allTags && allTags.length > 0 ? allTags.map(tag => (
                       <option key={tag} value={tag}>{tag}</option>
-                    ))}
+                    )) : null}
                   </select>
                 </div>
                 
@@ -147,20 +190,31 @@ const App: React.FC = () => {
                   <select 
                     className="w-full rounded-xl border-[#efa3a0]/20 shadow-sm focus:border-[#8b597b] focus:ring-[#8b597b] py-3 text-lg bg-[#ffeedd]/50 text-[#493129] transition-all duration-200"
                     value={selectedNote || ''}
-                    onChange={(e) => handleSelectNote(e.target.value)}
+                    onChange={(e) => {
+                      const noteId = e.target.value;
+                      console.log('Select dropdown changed to:', noteId);
+                      if (noteId) {
+                        setSelectedNote(noteId);
+                        setCurrentAICard(null);
+                      } else {
+                        setSelectedNote(null);
+                        setCurrentAICard(null);
+                      }
+                    }}
+                    style={{ position: 'relative', zIndex: 30 }}
                   >
                     <option value="">Select a note</option>
-                    {filteredNotes.map(note => (
+                    {filteredNotes && filteredNotes.length > 0 ? filteredNotes.map(note => (
                       <option key={note.id} value={note.id}>{note.title}</option>
-                    ))}
+                    )) : null}
                   </select>
                 </div>
               </div>
               
               <div className="flex-grow">
                 <h2 className="text-3xl font-bold text-[#493129] mb-6 border-b border-[#efa3a0]/20 pb-2">Your Notes</h2>
-                <div className="space-y-5 max-h-[calc(100vh-42rem)] overflow-y-auto mb-8">
-                  {filteredNotes.map((note) => (
+                <div className="space-y-5 overflow-y-auto max-h-[calc(100vh-42rem)] pr-2 mb-8" style={{ scrollbarWidth: 'thin' }}>
+                  {filteredNotes && filteredNotes.length > 0 ? filteredNotes.map((note) => (
                     <div
                       key={note.id}
                       className={`group p-6 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -168,7 +222,12 @@ const App: React.FC = () => {
                           ? 'bg-gradient-to-br from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 shadow-sm' 
                           : 'bg-[#ffeedd]/50 hover:bg-[#ffeedd]/70 border border-[#efa3a0]/20'
                       }`}
-                      onClick={() => handleSelectNote(note.id)}
+                      onClick={() => {
+                        console.log('Note clicked:', note.id);
+                        setSelectedNote(note.id);
+                        setCurrentAICard(null);
+                      }}
+                      style={{ position: 'relative', zIndex: 10 }}
                     >
                       <h3 className="text-xl font-medium leading-tight text-[#493129]">{note.title}</h3>
                       <p className="mt-3 text-lg text-[#493129]/80 line-clamp-2 leading-relaxed">{note.content}</p>
@@ -196,61 +255,86 @@ const App: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                  ))}
+                  )) : null}
+                  {filteredNotes && filteredNotes.length === 0 && (
+                    <div className="text-center py-10 bg-[#ffeedd]/50 rounded-xl border border-[#efa3a0]/20 text-[#493129]/70 mb-8">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-[#efa3a0] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                      <p className="text-xl font-medium">No notes found</p>
+                    </div>
+                  )}
                 </div>
-                {filteredNotes.length === 0 && (
-                  <div className="text-center py-10 bg-[#ffeedd]/50 rounded-xl border border-[#efa3a0]/20 text-[#493129]/70 mb-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-[#efa3a0] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                    <p className="text-xl font-medium">No notes found</p>
-                  </div>
-                )}
               </div>
               
               {/* AI Output Format Selection */}
               <div className="mt-auto pt-6 border-t border-[#efa3a0]/20">
+                {/* Display sync error if present */}
+                {useNoteStore.getState().ui.error && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                    <p className="font-medium">Sync Error</p>
+                    <p className="text-sm">{useNoteStore.getState().ui.error}</p>
+                  </div>
+                )}
                 <div className="mb-6">
                   <label className="block text-xl font-medium text-[#8b597b] mb-4">
                     AI Output Format
                   </label>
                   <div className="grid grid-cols-3 gap-4">
-                    <label className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'summary' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}>
+                    <label 
+                      className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'summary' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}
+                      style={{ position: 'relative', zIndex: 20 }}
+                    >
                       <input
                         type="radio"
                         className="hidden"
                         name="outputType"
                         value="summary"
                         checked={outputType === 'summary'}
-                        onChange={() => setOutputType('summary')}
+                        onChange={() => {
+                          console.log('Setting output type to summary');
+                          setOutputType('summary');
+                        }}
                       />
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-3 text-[#8b597b]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       <span className="text-lg">Summary</span>
                     </label>
-                    <label className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'flashcard' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}>
+                    <label 
+                      className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'flashcard' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}
+                      style={{ position: 'relative', zIndex: 20 }}
+                    >
                       <input
                         type="radio"
                         className="hidden"
                         name="outputType"
                         value="flashcard"
                         checked={outputType === 'flashcard'}
-                        onChange={() => setOutputType('flashcard')}
+                        onChange={() => {
+                          console.log('Setting output type to flashcard');
+                          setOutputType('flashcard');
+                        }}
                       />
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-3 text-[#8b597b]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                       </svg>
                       <span className="text-lg">Flashcards</span>
                     </label>
-                    <label className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'revision' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}>
+                    <label 
+                      className={`flex flex-col items-center justify-center p-5 rounded-xl cursor-pointer transition-all duration-200 ${outputType === 'revision' ? 'bg-gradient-to-b from-[#efa3a0]/20 to-[#ffeedd]/80 border-2 border-[#8b597b]/40 text-[#493129] shadow-sm' : 'bg-[#ffeedd]/50 border border-[#efa3a0]/20 hover:bg-[#ffeedd]/70 text-[#493129]/80'}`}
+                      style={{ position: 'relative', zIndex: 20 }}
+                    >
                       <input
                         type="radio"
                         className="hidden"
                         name="outputType"
                         value="revision"
                         checked={outputType === 'revision'}
-                        onChange={() => setOutputType('revision')}
+                        onChange={() => {
+                          console.log('Setting output type to revision');
+                          setOutputType('revision');
+                        }}
                       />
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-3 text-[#8b597b]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -262,9 +346,48 @@ const App: React.FC = () => {
                 
                 {selectedNote && (
                   <button
-                    onClick={() => handleProcessNote(selectedNote, outputType)}
+                    onClick={async () => {
+                      try {
+                        console.log('Generate content button clicked');
+                        const note = notes.find(n => n.id === selectedNote);
+                        if (!note) {
+                          console.error('Cannot find selected note:', selectedNote);
+                          return;
+                        }
+                        
+                        console.log('Processing note:', note.title);
+                        setIsProcessing(true);
+                        setStoreProcessing(true);
+                        setCurrentAICard(null);
+                        
+                        // Generate content based on selected type
+                        console.log('Calling aiService.processNote directly...');
+                        const result = await aiService.processNote(note, { type: outputType });
+                        
+                        // Create our AICard manually so we can use it immediately
+                        const newCard: AICardType = {
+                          ...result,
+                          id: crypto.randomUUID(),
+                        };
+                        
+                        console.log('Adding new AI card to store:', newCard.id);
+                        // Add to store
+                        addAICard(result);
+                        
+                        // Set as current card
+                        console.log('Setting current AI card');
+                        setCurrentAICard(newCard);
+                      } catch (error) {
+                        console.error(`Error processing note:`, error);
+                        alert(`Failed to process note: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                      } finally {
+                        setIsProcessing(false);
+                        setStoreProcessing(false);
+                      }
+                    }}
                     disabled={isProcessing}
                     className="w-full px-6 py-5 bg-gradient-to-r from-[#8b597b] to-[#efa3a0] text-white rounded-xl shadow-md text-lg font-semibold transition-all duration-200 ease-in-out transform hover:translate-y-[-2px] disabled:opacity-50 disabled:transform-none disabled:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#efa3a0]"
+                    style={{ position: 'relative', zIndex: 20 }}
                   >
                     {isProcessing ? (
                       <div className="flex items-center justify-center">

@@ -1,5 +1,5 @@
 import { Note, AICard } from '../../stores/noteStore';
-import { Ollama } from 'ollama';
+import axios from 'axios';
 
 interface AIProcessingOptions {
   type: AICard['type'];
@@ -7,15 +7,20 @@ interface AIProcessingOptions {
   style?: string;
 }
 
+interface OllamaResponse {
+  model: string;
+  created_at: string;
+  response: string;
+  done: boolean;
+}
+
 export class AIService {
   private static instance: AIService;
-  private ollama: Ollama;
+  private host: string; 
   private model = 'mistral'; // Using Mistral as default model
 
   private constructor() {
-    this.ollama = new Ollama({
-      host: 'http://localhost:11434', // Default Ollama host
-    });
+    this.host = 'http://localhost:11434'; // Default Ollama host
   }
 
   static getInstance(): AIService {
@@ -28,10 +33,55 @@ export class AIService {
   async initialize(): Promise<void> {
     try {
       // Check if model is available
-      await this.ollama.list();
+      await axios.get(`${this.host}/api/tags`);
     } catch (error) {
       console.error('Failed to initialize Ollama:', error);
       throw new Error('Failed to initialize AI service. Please ensure Ollama is running and the model is installed.');
+    }
+  }
+
+  private async generateWithOllama(prompt: string, retryCount = 0): Promise<string> {
+    try {
+      console.log('Sending request to Ollama');
+      const response = await axios.post(`${this.host}/api/generate`, {
+        model: this.model,
+        prompt,
+        stream: false,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 60000, // 60 second timeout
+      });
+      
+      console.log('Received response from Ollama');
+      
+      if (!response.data || !response.data.response) {
+        console.error('Invalid response from Ollama:', response.data);
+        throw new Error('Invalid response from Ollama');
+      }
+      
+      return response.data.response;
+    } catch (error) {
+      console.error('Error in Ollama request:', error);
+      
+      if (axios.isAxiosError(error)) {
+        console.error('Request details:', error.config);
+        if (error.response) {
+          console.error('Response status:', error.response.status);
+          console.error('Response data:', error.response.data);
+        } else if (error.request) {
+          console.error('No response received');
+        }
+        
+        // Retry logic for network errors or timeouts
+        if ((error.code === 'ECONNABORTED' || !error.response) && retryCount < 2) {
+          console.log(`Retrying request (attempt ${retryCount + 1})...`);
+          return this.generateWithOllama(prompt, retryCount + 1);
+        }
+      }
+      
+      throw new Error(`Failed to generate content with Ollama: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -42,13 +92,7 @@ ${note.content}
 
 Generate a clear and informative summary that captures the essential information.`;
 
-    const response = await this.ollama.generate({
-      model: this.model,
-      prompt,
-      stream: false,
-    });
-
-    return response.response;
+    return this.generateWithOllama(prompt);
   }
 
   private async generateFlashcards(note: Note): Promise<string> {
@@ -58,13 +102,7 @@ ${note.content}
 
 Generate clear, concise questions that test understanding of key concepts, and provide accurate, informative answers.`;
 
-    const response = await this.ollama.generate({
-      model: this.model,
-      prompt,
-      stream: false,
-    });
-
-    return response.response;
+    return this.generateWithOllama(prompt);
   }
 
   private async generateRevision(note: Note): Promise<string> {
@@ -74,13 +112,7 @@ ${note.content}
 
 Format the output as a structured list of points that would be useful for revision.`;
 
-    const response = await this.ollama.generate({
-      model: this.model,
-      prompt,
-      stream: false,
-    });
-
-    return response.response;
+    return this.generateWithOllama(prompt);
   }
 
   async processNote(note: Note, options: AIProcessingOptions): Promise<Omit<AICard, 'id'>> {
@@ -88,24 +120,32 @@ Format the output as a structured list of points that would be useful for revisi
     let confidence = 0.85; // Default confidence score
 
     try {
+      console.log(`Processing note with ID ${note.id} for ${options.type}`);
+      console.log('Note content:', note.content.substring(0, 50) + '...');
+      
       switch (options.type) {
         case 'summary':
+          console.log('Generating summary...');
           content = await this.generateSummary(note);
           break;
         case 'flashcard':
+          console.log('Generating flashcards...');
           content = await this.generateFlashcards(note);
           break;
         case 'revision':
+          console.log('Generating revision materials...');
           content = await this.generateRevision(note);
           break;
         default:
           throw new Error(`Unsupported processing type: ${options.type}`);
       }
 
+      console.log(`Generated content (${content.length} chars)`);
+      
       // Adjust confidence based on output length and complexity
       confidence = this.calculateConfidence(content, note.content);
 
-      return {
+      const result = {
         noteId: note.id,
         type: options.type,
         content,
@@ -114,6 +154,9 @@ Format the output as a structured list of points that would be useful for revisi
           generatedAt: new Date(),
         },
       };
+      
+      console.log('Returning AI card result');
+      return result;
     } catch (error) {
       console.error(`Error processing note for ${options.type}:`, error);
       throw new Error(`Failed to process note for ${options.type}`);

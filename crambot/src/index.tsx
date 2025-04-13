@@ -3,7 +3,7 @@ import "./index.css";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-// import { configureSyncEngine } from "@tonk/keepsync";
+import { configureSyncEngine } from "@tonk/keepsync";
 import {
   registerServiceWorker,
   unregisterServiceWorker,
@@ -18,16 +18,24 @@ if (process.env.NODE_ENV === "production") {
   unregisterServiceWorker();
 }
 
-// Comment out WebSocket configuration since we're not using sync
-// const wsUrl = process.env.NODE_ENV === "production"
-//   ? `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/sync`
-//   : "ws://localhost:4080";
+// Setup WebSocket connection for keepsync
+// In development, connect directly to the WebSocket server on port 4080
+const wsUrl = process.env.NODE_ENV === "production"
+  ? `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/sync`
+  : "ws://localhost:4080/sync";
 
-// configureSyncEngine({
-//   url: wsUrl,
-//   onSync: (docId) => console.log(`Document ${docId} synced`),
-//   onError: (error) => console.error("Sync error:", error),
-// });
+// Configure keepsync engine
+configureSyncEngine({
+  url: wsUrl,
+  onSync: (docId) => {
+    console.log(`Document ${docId} synced`);
+  },
+  onError: (error) => {
+    console.error("Sync error:", error);
+    // Don't completely break the app on sync errors
+    // Just log them for now
+  }
+});
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Failed to find the root element");

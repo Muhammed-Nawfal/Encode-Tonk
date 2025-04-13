@@ -3,7 +3,7 @@ import { useNoteStore, Note, NoteState } from '../../stores/noteStore';
 
 interface NoteEditorProps {
   initialNote?: Partial<Note>;
-  onSave?: () => void;
+  onSave?: (noteId: string) => void;
   onCancel?: () => void;
 }
 
@@ -32,11 +32,11 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
 
       if (initialNote?.id) {
         updateNote(initialNote.id, noteData);
+        onSave?.(initialNote.id);
       } else {
-        addNote(noteData);
+        const newNote = addNote(noteData);
+        onSave?.(newNote.id);
       }
-
-      onSave?.();
     },
     [title, content, tags, initialNote?.id, updateNote, addNote, onSave]
   );

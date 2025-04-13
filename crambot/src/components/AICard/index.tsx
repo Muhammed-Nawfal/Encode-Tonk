@@ -8,7 +8,11 @@ interface AICardProps {
 
 const AICard: React.FC<AICardProps> = ({ card, onDelete }) => {
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleString();
+    try {
+      return new Date(date).toLocaleString();
+    } catch (error) {
+      return 'Invalid date';
+    }
   };
 
   const getTypeIcon = (type: AICardType['type']) => {
