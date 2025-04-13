@@ -1,90 +1,63 @@
-# 🌙 Lumio – The Student Life Hack You Didn’t Know You Needed
+🌟 Lumio – The Student Life Hack You Didn’t Know You Needed
+Built in 48 hours of sleep-deprived wizardry at Encode Hackathon – London 2025
 
-> *Built in 48 hours of sleep-deprived wizardry at Encode Hackathon - London 2025*
+🧠 What Is Lumio?
+Meet your new academic BFF.
 
----
+It’s like if Google Calendar, Notion, and ChatGPT had a baby…
+...but raised it in a library, fed it Red Bull, and taught it to vibe.
 
-## 🧠 What Is Lumio?
+We built three mini-apps that are smarter together – like the Powerpuff Girls, but for studying:
 
-Welcome to **Lumio**, your new academic BFF.  
-It’s like if Google Calendar, Notion, and ChatGPT had a baby… but raised it in a library, fed it Red Bull, and taught it to vibe.
+🧩 Mini-App	💥 Superpower
+NoteBank	Take notes with tags so organized they make Marie Kondo cry
+SemSync	Track deadlines, classes, exams, and existential dread
+CramBot	AI that turns your chaos into flashcards & motivational guilt
+All powered by the Tonk stack – a magical, decentralized, private brain for your apps 🧙‍♂✨
 
-We built **three mini-apps** that are smarter together, like the Powerpuff Girls, but for studying:
+⚙ Tech Stack – aka “Stuff We Glued Together at 3AM”
+🧠 Tonk Toolchain – The secret sauce (shared datastore, decentralized wizardry)
 
-| 🧩 Mini-App   | Superpower |
-|--------------|------------|
-| **NoteBank** | Take notes with tags so organized they make Marie Kondo cry |
-| **SemSync**  | Track deadlines, classes, exams, existential dread |
-| **CramBot**  | AI that turns your chaos into flashcards & motivational guilt |
+⚛ React + Vite – Because we like fast builds and snappy UIs
 
-All talking through the **Tonk stack**, which is basically a magical, decentralized, private brain for your apps 🧙‍♂️✨
+🪄 Ollama – CramBot’s brain (don’t worry, it’s friendly… for now)
 
----
+⏰ date-fns – We needed something to understand time because we don’t
 
-## ⚙️ Tech Stack – aka “Stuff We Glued Together at 3AM”
+🍕 Pizza – Not a tech, but deeply essential
 
-- 🧠 **Tonk Toolchain** – the secret sauce (shared datastore, decentralized wizardry)
-- ⚛️ **React + Vite** – because we like fast builds and snappy UIs
-- 🪄 **Ollama** – CramBot’s brain (don’t worry, it’s friendly… for now)
-- ⏰ **date-fns** – we needed something to understand time because we don’t
-- 🍕 **Pizza** – not a tech but extremely important
+🎥 Demo Vibes
+Warning: These GIFs may cause inspiration and/or FOMO.
 
----
+📝 NoteBank
+“Wait, I actually remember what I wrote?” – You, next exam season.
 
-## 🎥 Demo Vibes
+📅 SemSync
+Keeping track of deadlines like your mom with a clipboard.
 
-> *Warning: These GIFs may cause inspiration and/or FOMO.*
+🤖 CramBot
+"Flashcards generated. Guilt trip initialized."
 
-### 📝 NoteBank  
-![NoteBank Demo](./screenshots/notebank.gif)  
-_“Wait, I actually remember what I wrote?” – You, next exam season._
-
----
-
-### 📅 SemSync  
-![SemSync Demo](./screenshots/semsync.gif)  
-_Keeping track of deadlines like your mom with a clipboard._
-
----
-
-### 🤖 CramBot  
-![CramBot Demo](./screenshots/crambot.gif)  
-_"Flashcards generated. Guilt trip initialized."_  
-
----
-
-## 🕵️‍♀️ How the Magic Happens
-
-You → Write notes & deadlines
-     ↓
-Tonk → Glues it all together
-     ↓
-CramBot → Summarizes it into flashcards and pings you before your grades drop
+🕵‍♀ How the Magic Happens
+You
+→ Write notes & deadlines
+↓
+Tonk
+→ Glues it all together
+↓
+CramBot
+→ Summarizes it into flashcards and pings you before your grades drop
 
 🧪 Run It Yourself (We Dare You)
-<details> <summary>👨‍💻 Click here for installation instructions if you're brave</summary>
-bash
-Copy
-Edit
-# Clone the madness
-git clone <this-repo> && cd <thisrepo>
-
-# Install the chaos
-npm install
-
-# Let there be light
-npm run dev
-
-# Then open http://localhost:3000 and start vibing
-</details>
+👨‍💻 Click here for installation instructions if you're brave.
 
 🧠 Behind the Madness
 Name	What They Broke Built
 Nithin	UI/UX vibes, SemSync overlord
 Nawfal	NoteBank sorcery & data whisperer
 Nethra	Prompt engineer and CramBot whisperer
-Raisa	Chaos coordinator, README goblin 🧌 & slayer of mysterious sync demons 🛠️
-💡 Next Level Ideas (Post-Hackathon Hype)
+Raisa	Chaos coordinator, README goblin 🧌 & slayer of mysterious sync demons 🛠
+💡 Next-Level Ideas (Post-Hackathon Hype)
 Group flashcard battles (study or suffer)
 
 A Chrome extension that screams at you when a deadline’s close
@@ -92,36 +65,20 @@ A Chrome extension that screams at you when a deadline’s close
 Mobile version so you can procrastinate anywhere
 
 ✅ Submission Checklist
- Three mini-apps that talk to each other like besties
+✅ Three mini-apps that talk to each other like besties
 
- One shared brain via Tonk
+✅ One shared brain via Tonk
 
- AI with a guilt complex (CramBot)
+✅ AI with a guilt complex (CramBot)
 
- README that slaps
+✅ README that slaps
 
- Team morale mostly intact
+✅ Team morale mostly intact
 
 📚 Useful Stuff
-🧙‍♂️ Tonk Docs (they're actually good)
+🧙‍♂ Tonk Docs (they're actually good)
 
 📦 Our Code (chaos included)
 
 Built with love, caffeine, and mild panic.
 #TeamLumio #EncodeHackathon #WeSurvived
-
-yaml
-Copy
-Edit
-
----
-
-### 🧠 Extra Tips (Optional Hype Sauce)
-
-- Add a meme at the end. Bonus points if it’s CramBot threatening you.
-- If you want, I can help you mock up a funny "How It Works" comic/diagram.
-- If time permits, toss in a little loading animation or funny placeholder text in the app itself ("Loading... calculating GPA loss").
-
----
-
-Wanna go further? Drop me a funny CramBot quote or your team’s inside jokes and I can throw those in too 😂
