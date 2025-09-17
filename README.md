@@ -7,27 +7,40 @@
 ## 🧠 What Is Lumio?
 
 Welcome to *Lumio*, your new academic BFF.  
-It’s like if Google Calendar, Notion, and ChatGPT had a baby… but raised it in a library, fed it Red Bull, and taught it to vibe.
 
-We built *three mini-apps* that are smarter together, like the Powerpuff Girls, but for studying:
+Lumio is a collaborative study platform at the Encode Hackathon London 2025.  
+It integrates note-taking, deadline tracking, and AI-powered flashcards into one seamless student toolkit.  
+
+It’s like if Google Calendar, Notion, and ChatGPT had a baby… 
+
+We built *three mini-apps* that are smarter together, for studying:
 
 | 🧩 Mini-App   | Superpower |
 |--------------|------------|
-| *NoteBank* | Take notes with tags so organized they make Marie Kondo cry |
-| *SemSync*  | Track deadlines, classes, exams, existential dread |
-| *CramBot*  | AI that turns your chaos into flashcards & motivational guilt |
+| *NoteBank* | Shared notes with tags for better organization |
+| *SemSync*  | Track deadlines, classes, and exams |
+| *CramBot*  | AI that turns notes into flashcards |
 
-All talking through the *Tonk stack*, which is basically a magical, decentralized, private brain for your apps 🧙‍♂✨
+All apps communicated through the **Tonk stack**, a shared datastore enabling seamless integration. 🧙‍♂✨
+
+---
+
+## 👨‍💻 My Contribution (Muhammed Nawfal)
+
+- Designed and developed the **full UI for NoteBank** (React).
+- Integrated NoteBank with the shared Tonk backend and database.
+- Contributed to testing and final demo polish during hackathon.
+
+> Note: Repo commit history is condensed since this was built under intense hackathon time pressure. My specific contributions are detailed here.
 
 ---
 
 ## ⚙ Tech Stack – aka “Stuff We Glued Together at 3AM”
 
-- 🧠 *Tonk Toolchain* – the secret sauce (shared datastore, decentralized wizardry)
-- ⚛ *React + Vite* – because we like fast builds and snappy UIs
-- 🪄 *Ollaama* – CramBot’s brain (don’t worry, it’s friendly… for now)
-- ⏰ *date-fns* – we needed something to understand time because we don’t
-- 🍕 *Pizza* – not a tech but extremely important
+- 🧠 **Backend/Data:** Tonk Toolchain (shared datastore)  
+- ⚛ **Frontend:** React, Vite
+- 🪄 **AI:** Ollama API (flashcard generation)  
+- ⏰ **Utilities:** date-fns  
 
 ---
 
@@ -38,21 +51,15 @@ All talking through the *Tonk stack*, which is basically a magical, decentralize
 
 ![image](https://github.com/user-attachments/assets/020ff91a-c83c-4d4b-9a41-36bdd360af46)
 
-“Wait, I actually remember what I wrote?” – You, next exam season.
-
 ### 📅 SemSync  
 ![SemSync Demo](./screenshots/semsync.gif)  
 
 ![image](https://github.com/user-attachments/assets/1d4034e2-a861-49ef-b6ca-b43e16eb00b9)
 
-Keeping track of deadlines like your mom with a clipboard.
-
 ### 🤖 CramBot  
 ![CramBot Demo](./screenshots/crambot.gif)  
 
 ![image](https://github.com/user-attachments/assets/b581a2d7-9acb-4902-be57-39fe3d51325c)
-
-"Flashcards generated. Guilt trip initialized."
 
 ---
 
@@ -68,22 +75,22 @@ CramBot → Summarizes it into flashcards and pings you before your grades drop
 ```
 ---
 
-## 🧪 Run It Yourself (We Dare You)
+## 🕵 How It Works
 
 <details>
-<summary>👨‍💻 Click here for installation instructions if you're brave</summary>
+<summary>👨‍💻 Click here for installation instructions</summary>
 
 
-Clone the madness
+Clone the repository
 ```
-git clone git@github.com:raisa05/Encode-Tonk.git && cd Encode-Tonk
+git clone git@github.com:Muhammed-Nawfal/Encode-Tonk.git && cd Encode-Tonk
 ```
 
-Install the chaos
+Install dependencies
 ```
 npm install
 ```
-Let there be light (For each app separately)
+Run each app separately:
 ```
 npm run dev
 ```
@@ -98,18 +105,18 @@ Then open ``` http://localhost:3000 ``` and start vibing
 
 | Name     | What They Broke Built |
 |----------|------------------------|
-| Nithin   | UI/UX vibes, SemSync overlord |
-| Nawfal   | NoteBank sorcery & data whisperer |
-| Nethra   | Prompt engineer and CramBot whisperer |
-| Raisa    | Chaos coordinator, README goblin 🧌 & slayer of mysterious sync demons 🛠 💡|
+| Nithin   | UI/UX design, SemSync development |
+| Nawfal   | NoteBank UI |
+| Nethra   | Prompt engineering and CramBot development |
+| Raisa    | Integration and documentation |
 
 ---
 
-## 💡 Next Level Ideas (Post-Hackathon Hype)
+## 🚀 Future Improvements
 
-- Group flashcard battles (study or suffer)
-- A Chrome extension that screams at you when a deadline’s close
-- Mobile version so you can procrastinate anywhere
+- Group flashcard sharing and quizzes  
+- Browser extension for deadline reminders  
+- Mobile version for cross-platform access 
 
 ---
 
