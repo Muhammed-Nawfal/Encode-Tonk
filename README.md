@@ -8,7 +8,7 @@
 
 Welcome to *Lumio*, your new academic BFF.  
 
-Lumio is a collaborative study platform at the Encode Hackathon London 2025.  
+Lumio is a collaborative study platform built in 48 hours at the Encode Hackathon London 2025.
 It integrates note-taking, deadline tracking, and AI-powered flashcards into one seamless student toolkit.  
 
 It’s like if Google Calendar, Notion, and ChatGPT had a baby… 
@@ -25,13 +25,17 @@ All apps communicated through the **Tonk stack**, a shared datastore enabling se
 
 ---
 
+> 🏆 **Award:** First Place, Encode Club AI Hackathon London 2025
+
 ## 👨‍💻 My Contribution (Muhammed Nawfal)
 
 - Designed and developed the **full UI for NoteBank** (React).
 - Integrated NoteBank with the shared Tonk backend and database.
 - Contributed to testing and final demo polish during hackathon.
 
-> Note: Repo commit history is condensed since this was built under intense hackathon time pressure. My specific contributions are detailed here.
+> Note: This project was originally pushed under a different GitHub account during the Encode Club Hackathon.  
+> The repository has been mirrored here to keep all projects under one profile.  
+> My contributions are detailed above.
 
 ---
 
