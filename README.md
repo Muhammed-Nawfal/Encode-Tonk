@@ -120,16 +120,6 @@ Then open ``` http://localhost:3000 ``` and start vibing
 
 ---
 
-## ✅ Submission Checklist
-
-- [x] Three mini-apps that talk to each other like besties
-- [x] One shared brain via Tonk
-- [x] AI with a guilt complex (CramBot)
-- [x] README that slaps
-- [x] Team morale mostly intact
-
----
-
 ## 📚 Useful Stuff
 
 - [🧙‍♂ Tonk Docs (they're actually good)](https://tonk-labs.github.io/tonk/)
